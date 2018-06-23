@@ -11,13 +11,17 @@
     "mocha": "^5.2.0",
     "moment": "^2.22.2",
     "mysql": "^2.15.0",
+    "node-phantom": "^0.2.5",
     "path": "^0.12.7",
+    "phantom": "^6.0.0",
     "request": "^2.87.0",
     "should": "^13.2.1",
     "superagent": "^3.8.3",
     "utility": "^1.13.1"
   },
   "scripts": {
-    "test": "make test"
-  }
+    "test": "make test",
+    "phantomjs": "node_modules/.bin/phantomjs"
+  },
+  "devDependencies": {}
 }
