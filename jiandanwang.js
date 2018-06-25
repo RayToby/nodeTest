@@ -29,7 +29,7 @@ function all(body) {
     n=n+$(".commentlist img").length;
     console.log(n);
     $(".commentlist img").each(function (i, ele) {
-        var imgsrc = 'http:' + $(this).attr('src');
+        var imgsrc = $(this).attr('src');
         var fileName = FileName(imgsrc.toString());
         //下载文件操作
         downloadImg(imgsrc, fileName, function () {
@@ -51,26 +51,34 @@ function downloadImg(url, filename, callback) {
 }
 
 function usePhantomjs (option) {
+    let phInstance = null;
+    let sitepage = null;
     phantom.create()
         .then(ph => {
+            phInstance = ph;
             return ph.createPage()
         })
         .then(page => {
+            sitepage = page;
             return  page.open(option.url)
         })
         .then(res => {
             console.log("Status: " + res);
-            if (res === 'success') {
-                console.log('1111');
-                page.render('example.png');
-                console.log(page.content);
-                all(page.content)
-            } else{
-                console.log('fail')
-            }
-            // page.close();
-            phantom.exit();
-        }).catch(err =>{
+            return sitepage.property('content');
+        })
+        .then(content => {
+            // if (res === 'success') {
+            //     console.log('1111');
+            //     page.render('example.png');
+            //     console.log(page.content);
+                all(content);
+            // } else{
+            //     console.log('fail')
+            // }
+            sitepage.close();
+            phInstance.exit();
+        })
+        .catch(err =>{
 
         });
     // }, {
@@ -120,12 +128,3 @@ async.mapLimit(options,3, function (option, callback) {
 //     // page.close();
 //     phantom.exit();
 // })
-
-
-
-{/* <div class="text"><span class="righttext"><a href="//jandan.net/ooxx/page-38#comment-3862396">3862396</a></span><p><img src="//img.jandan.net/img/blank.gif" onload="jandan_load_img(this)" /><span class="img-hash">Ly93eDMuc2luYWltZy5jbi9tdzYwMC82YTEyYmU0N2x5MWZzZnY5Nm9mZmtqMjFzMDJkY2hkdC5qcGc=</span></p>
-</div>
-
-
-<div class="text"><span class="righttext"><a href="//jandan.net/ooxx/page-38#comment-3862311">3862311</a></span><p><img src="//img.jandan.net/img/blank.gif" onload="jandan_load_img(this)" /><span class="img-hash">Ly93eDMuc2luYWltZy5jbi9tdzYwMC8wMDc2QlNTNWx5MWZzZzlwcXBkc3FqMzBxbzBxb3FiMS5qcGc=</span></p>
-</div> */}
