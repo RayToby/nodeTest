@@ -14,13 +14,13 @@ for(var i = 1; i <= 20; i++) {
     urlArr.push(url);
 }
 console.log(urlArr);
-
+var jsonData = [];
 app.get('/',(req, res) => {
     async.mapLimit(urlArr, 5, (url, callback) => {
         superagent.get(url).end((err, result) => {
             if (err) console.error(err);
             var $ = cheerio.load(result.text);
-            var jsonData = [];
+           
             $('.article .doulist-item').each((index, element) => {
                 var $element = $(element);
                 jsonData.push({
@@ -46,5 +46,7 @@ app.get('/',(req, res) => {
 
 app.listen(3000,(req, res) => {
     console.log('listen at port 3000');
-})
+});
+
+// app.use(express.static(path.join(__dirname, 'public')));
 
