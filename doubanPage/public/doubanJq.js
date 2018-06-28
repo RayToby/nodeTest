@@ -18,6 +18,6 @@ $.ajax({
                         </tr>`
             $table.append(_html);
         });   
-        console.log('总数：'+newArray.length)
+        $("#title").text(newArray.length + '条数据')
     }
 });
